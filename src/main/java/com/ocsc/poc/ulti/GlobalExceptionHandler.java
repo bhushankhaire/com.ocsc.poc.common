@@ -30,14 +30,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity(error, HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(Exception.class)
-	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
-		List<String> details = new ArrayList<>();
-		details.add(ex.getLocalizedMessage());
-		ErrorResponse error = new ErrorResponse("Server Error", details);
-		return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
 	@ExceptionHandler(TechnicalException.class)
 	public final ResponseEntity<Object> handleTechnicalExceptions(Exception ex, WebRequest request) {
 		List<String> details = new ArrayList<>();
@@ -67,5 +59,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		}
 		ErrorResponse error = new ErrorResponse("Validation Failed", details);
 		return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(LoginException.class)
+	public final ResponseEntity<Object> handleLoginException(LoginException ex, WebRequest request) {
+		List<String> details = new ArrayList<>();
+		details.add(ex.getLocalizedMessage());
+		ErrorResponse error = new ErrorResponse("Unauthorized", details);
+		return new ResponseEntity(error, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+		List<String> details = new ArrayList<>();
+		details.add(ex.getLocalizedMessage());
+		ErrorResponse error = new ErrorResponse("Server Error", details);
+		return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
